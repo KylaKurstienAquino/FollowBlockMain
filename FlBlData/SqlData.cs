@@ -12,7 +12,7 @@ namespace FlBlData
     {
         //local path or file path
         string connectionString
-             = "Data Source=MIYUAKI\SQLEXPRESS;Initial Catalog = followblock; Integrated Security = True:";
+             = "Data Source=MIYUAKI\\SQLEXPRESS;Initial Catalog = followblock; Integrated Security = True:";
 
         //initializing sql connection
         static SqlConnection connection;
