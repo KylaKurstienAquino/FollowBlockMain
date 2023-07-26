@@ -1,10 +1,11 @@
+using FlBlData;
+using FlBlModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FlBlData;
-using FlBlModel;
+
 
 namespace FlBlRules
 {
@@ -19,7 +20,7 @@ namespace FlBlRules
 
         public void BlockAcc(StudentAccount block, StudentAccount studentUser) {
 
-            blockData.dataBlock(follower.user, studentUser.user);
+            blockData.dataBlock(blocker.user, studentUser.user);
         }
 
         public void BlockerAcc(StudentAccount block, StudentAccount studentUser)
@@ -50,7 +51,7 @@ public class BlockData
         BlockedAccounts newAccounts = new BlockedAccounts(blockerUser, studentUser);
         BlockedAccounts.Add(newAccounts);
 
-        Console.WriteLine($"User '{studentUser}' is blocked .");
+        Console.WriteLine($"User '{studentUser}' is blocked to your account .");
     }
 
     public void dataUnblock(string blockerUser, string studentUser)
