@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace FlBlModel
 {
-    internal class Following
+    public class Following
     {
+        public string StudentNo { get; set; }
+        public string FollowingName { get; set; }
+        public string FollowingCourse { get; set; }
+        public string FollowingSection { get; set; }
     }
 }
