@@ -10,17 +10,49 @@ namespace FlBlData
 {
     public class FollowData
     {
-        public void dataFollow (string tofollow, string myAccount) {
+        static SqlData sqlDataAccess = new();
+        static List<Following> Flwing = new();
+        static List<Follower> Flwers = new();
+        public void ShowFollowingList(string accountFollowing)
+        {
+            Flwing = sqlDataAccess.GetFollowingList(accountFollowing);
 
-           /* FollowedAccounts followedAccounts = new();
-            followedAccounts.follower =  myAccount;
-            followedAccounts.following = tofollow;*/ 
-        
+            if (Flwing.Count == 0)
+            {
+                Console.WriteLine("You are not following anyone.");
+            }
+            else if (Flwing.Count > 0)
+            {
+                foreach (var tofollow in Flwing)
+                {
+                    Console.WriteLine("StudentNo: " + tofollow.StudentNo);
+                    Console.WriteLine("Username: " + tofollow.FollowingName);
+                    Console.WriteLine("Course: " + tofollow.FollowingCourse);
+                    Console.WriteLine("Section: " + tofollow.FollowingSection);
+                    Console.WriteLine();
+                }
+            }
         }
 
-        public void dataUnfollow (string tounfollow, string myAccount)
+        public void ShowFollowerList(string accountFollower)
         {
+            Flwers = sqlDataAccess.GetFollowerList(accountFollower);
 
+            if (Flwers.Count == 0)
+            {
+                Console.WriteLine("You have no followers.");
+            }
+            else
+            {
+                foreach (var thefollower in Flwers)
+                {
+                    Console.WriteLine("StudentNo: " + thefollower.StudentNo);
+                    Console.WriteLine("Username: " + thefollower.FollowerName);
+                    Console.WriteLine("Course: " + thefollower.FollowerCourse);
+                    Console.WriteLine("Section: " + thefollower.FollowerSection);
+                    Console.WriteLine();
+                }
+            }
         }
     }
 }

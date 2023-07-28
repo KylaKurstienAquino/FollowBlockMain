@@ -13,9 +13,9 @@ namespace FollowBlockMain
             var userBlock = new Block();
             var userFollow = new Follow();
 
-            var follower = new StudentAccount();
-            var student = new StudentAccount();
-            var blocker = new StudentAccount();
+            var follower = new Blocked();
+            var student = new Blocked();
+            var blocker = new Blocked();
 
             userFollow.FollowAcc(follower, student);
             userFollow.UnfollowAcc(follower, student);
