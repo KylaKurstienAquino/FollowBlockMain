@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlBlModel
 {
-    public class StudentAccount
+    public class Blocked
     {
         public string user { get; set; }
     }

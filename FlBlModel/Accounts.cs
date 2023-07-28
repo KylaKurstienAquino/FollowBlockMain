@@ -6,32 +6,13 @@ using System.Threading.Tasks;
 
 namespace FlBlModel
 {
-    public class BlockedAccounts
+    public class Accounts
     {
-        public BlockedAccounts(string blockerUser, string studentUser)
-        {
-            BlockerUser = blockerUser;
-            StudentUser = studentUser;
-        }
-
-        public string blocker { get; set; }
-        public string blocked { get; set; }
-        public string BlockerUser { get; set; }
-        public string StudentUser { get; set; }
-
-        public static void Add(BlockedAccounts newAccounts)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static BlockedAccounts FirstOrDefault(Func<object, bool> value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void Remove(BlockedAccounts accounts)
-        {
-            throw new NotImplementedException();
-        }
+        public string StudentNo { get; set; }
+        public string Password { get; set; }
+        public string Username { get; set; }
+        public string Course { get; set; }
+        public string Section { get; set; }
+        public string Status { get; set; }
     }
 }
