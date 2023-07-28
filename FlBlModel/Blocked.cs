@@ -8,6 +8,9 @@ namespace FlBlModel
 {
     public class Blocked
     {
-        public string user { get; set; }
+        public string StudentNo { get; set; }
+        public string BlockedName { get; set; }
+        public string BlockedCourse { get; set; }
+        public string BlockedSection { get; set; }
     }
 }
