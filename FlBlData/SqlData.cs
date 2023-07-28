@@ -330,5 +330,92 @@ namespace FlBlData
             command.ExecuteNonQuery();
             sqlconnection.Close();
         }
+        public void InsertFollower(string theFollowerStudentNo, string toFollowUsername)
+        {
+
+            string statement = "INSERT INTO Follower (StudentNo, FollowerName, FollowerCourse, FollowerSection)" +
+                    "VALUES (@StudentNo, @FollowerName, @FollowerCourse, @FollowerSection)";
+
+            SqlCommand command = new SqlCommand(statement, sqlconnection);
+
+            foreach (var accountList in Flwers = GetToFollowAccount(toFollowUsername))
+            {
+                command.Parameters.AddWithValue("@StudentNo", accountList.StudentNo);
+            }
+
+            foreach (var flowerlist in Flwers = GetFollowerAccountByStudentNo(theFollowerStudentNo))
+            {
+
+                command.Parameters.AddWithValue("@FollowerName", flowerlist.FollowerName);
+                command.Parameters.AddWithValue("@FollowerCourse", flowerlist.FollowerCourse);
+                command.Parameters.AddWithValue("@FollowerSection", flowerlist.FollowerSection);
+
+            }
+            sqlconnection.Open();
+            command.ExecuteNonQuery();
+            sqlconnection.Close();
+
+        }
+        public void InsertFollowing(string loggedInStudentNo, string followingName)
+        {
+            if (IsFollowing(loggedInStudentNo, followingName))
+            {
+                Console.WriteLine("Already following. Do you want to unfollow it? (Y/N)");
+                string choose = Console.ReadLine().ToUpper();
+                if (choose == "Y")
+                {
+                    RemoveFollowing(loggedInStudentNo, followingName);
+                    Console.WriteLine("Account unfollowed.");
+
+                }
+                return;
+            }
+
+            Acc = GetAccountByUsername(followingName);
+
+
+            string statement = "INSERT INTO Following ( StudentNo, FollowingName, FollowingCourse, FollowingSection) " +
+                "VALUES (@StudentNo, @FollowingName, @FollowingCourse, @FollowingSection)";
+            SqlCommand command = new SqlCommand(statement, sqlconnection);
+
+            foreach (var accountList in Acc)
+            {
+                command.Parameters.AddWithValue("@StudentNo", loggedInStudentNo);
+                command.Parameters.AddWithValue("@FollowingName", accountList.Username);
+                command.Parameters.AddWithValue("@FollowingCourse", accountList.Course);
+                command.Parameters.AddWithValue("@FollowingSection", accountList.Section);
+            }
+
+            sqlconnection.Open();
+            command.ExecuteNonQuery();
+
+            foreach (var accountList in Acc)
+            {
+                Console.WriteLine("You're now following " + accountList.Username);
+            }
+            sqlconnection.Close();
+
+        }
+
+        private bool IsFollowing(string loggedInStudentNo, string followingName)
+        {
+            bool itExists = false;
+            string statement = "SELECT * FROM Following WHERE StudentNo = @StudentNo AND FollowingName = @FollowingName";
+            SqlCommand command = new SqlCommand(statement, sqlconnection);
+            sqlconnection.Open();
+            command.Parameters.AddWithValue("@StudentNo", loggedInStudentNo);
+            command.Parameters.AddWithValue("@FollowingName", followingName);
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                itExists = true;
+            }
+            sqlconnection.Close();
+            return itExists;
+
+        }
+
+
     }
 }
