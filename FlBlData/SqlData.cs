@@ -417,5 +417,71 @@ namespace FlBlData
         }
 
 
+public void RemoveBlocked(string loggedInStudentNo, string blockedName)
+        {
+            string statement = "DELETE FROM Blocked WHERE StudentNo = @StudentNo AND BlockedName = @BlockedName";
+            SqlCommand command = new SqlCommand(statement, sqlconnection);
+
+            command.Parameters.AddWithValue("@StudentNo", loggedInStudentNo);
+            command.Parameters.AddWithValue("@BlockedName", blockedName);
+
+            sqlconnection.Open();
+            command.ExecuteNonQuery();
+            sqlconnection.Close();
+        }
+
+public bool InsertBlocked(string loggedInStudentNo, string blockedName)
+        {
+            if (IsBlocked(loggedInStudentNo, blockedName))
+            {
+                Console.WriteLine("You have already blocked this account.");
+                return false;
+            }
+
+            Acc = GetAccountByUsername(blockedName);
+
+            string query = "INSERT INTO Blocked (StudentNo, BlockedName, BlockedCourse, BlockedSection)" +
+                "VALUES (@StudentNo, @BlockedName, @BlockedCourse, @BlockedSection)";
+
+            SqlCommand command = new SqlCommand(query, sqlconnection);
+
+            foreach (var accountList in Acc)
+            {
+                command.Parameters.AddWithValue("@StudentNo", loggedInStudentNo);
+                command.Parameters.AddWithValue("@BlockedName", accountList.Username);
+                command.Parameters.AddWithValue("@BlockedCourse", accountList.Course);
+                command.Parameters.AddWithValue("@BlockedSection", accountList.Section);
+            }
+            sqlconnection.Open();
+            command.ExecuteNonQuery();
+
+            foreach (var accountList in Acc)
+            {
+                Console.WriteLine("You have blocked " + accountList.Username);
+            }
+            sqlconnection.Close();
+            return true;
+        }
+
+        public bool IsBlocked(string loggedInStudentNo, string blockedName)
+        {
+            bool itExists = false;
+
+            string statement = "SELECT * FROM Blocked WHERE StudentNo = @StudentNo AND BlockedName = @BlockedName ";
+            SqlCommand command = new SqlCommand(statement, sqlconnection);
+            sqlconnection.Open();
+            command.Parameters.AddWithValue("@StudentNo", loggedInStudentNo);
+            command.Parameters.AddWithValue("@BlockedName", blockedName);
+            command.ExecuteNonQuery();
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                itExists = true;
+            }
+            sqlconnection.Close();
+            return itExists;
+        }
+
     }
 }
