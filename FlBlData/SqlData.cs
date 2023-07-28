@@ -12,8 +12,6 @@ namespace FlBlData
 {
     public class SqlData
     {
-        //local path or file path
-
         static List<Accounts> Acc { get; set; }
         static List<Follower> Flwers { get; set; }
         static List<Following> Flwing { get; set; }
@@ -272,6 +270,65 @@ namespace FlBlData
 
         }
 
+        public bool AlreadyExists(string loggedInStudentNo)
+        {
+            bool itExists = false;
 
+            string statement = "SELECT Username, Password, Course, Section FROM Accounts WHERE StudentNo = @StudentNo ";
+            SqlCommand command = new SqlCommand(statement, sqlconnection);
+            sqlconnection.Open();
+            command.Parameters.AddWithValue("@StudentNo", loggedInStudentNo);
+            command.ExecuteNonQuery();
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                string username = reader["Username"].ToString();
+                string password = reader["Password"].ToString();
+                string course = reader["Course"].ToString();
+                string section = reader["Section"].ToString();
+
+                if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(course) && !string.IsNullOrEmpty(section))
+                {
+                    itExists = true;
+                }
+            }
+            reader.Close();
+            sqlconnection.Close();
+            return itExists;
+        }
+
+        public void CreateNewAccount(Accounts accounts)
+        {
+            string statement = "UPDATE Accounts SET Username = @Username , Password = @Password , Course = @Course , Section = @Section , Status = @Status " +
+                " WHERE StudentNo = @StudentNo";
+            SqlCommand command = new SqlCommand(statement, sqlconnection);
+            command.Parameters.AddWithValue("@StudentNo", accounts.StudentNo);
+            command.Parameters.AddWithValue("@Username", accounts.Username);
+            command.Parameters.AddWithValue("@Password", accounts.Password);
+            command.Parameters.AddWithValue("@Course", accounts.Course);
+            command.Parameters.AddWithValue("@Section", accounts.Section);
+            command.Parameters.AddWithValue("@Status", accounts.Status);
+
+            sqlconnection.Open();
+            command.ExecuteNonQuery();
+            sqlconnection.Close();
+        }
+
+        public void ChangeStatus(string studentNo, string password, string status = "oldAcc")
+        {
+            Acc = GetStudentAndStatus(studentNo, password);
+
+            string statement = "UPDATE Accounts SET Status = @Status WHERE StudentNo = @StudentNo AND Password = @Password";
+            SqlCommand command = new SqlCommand(statement, sqlconnection);
+
+            command.Parameters.AddWithValue("@Status", status);
+            command.Parameters.AddWithValue("@StudentNo", studentNo);
+            command.Parameters.AddWithValue("@Password", password);
+
+            sqlconnection.Open();
+            command.ExecuteNonQuery();
+            sqlconnection.Close();
+        }
     }
 }
