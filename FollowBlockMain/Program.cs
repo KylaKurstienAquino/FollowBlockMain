@@ -10,18 +10,61 @@ namespace FollowBlockMain
     {
         public static void Main ()
         {
-            var userBlock = new Block();
-            var userFollow = new Follow();
+            static FollowBlockRules _rulelayer = new();
+            public static void Main(string[] args)
+            {
+                do
+                {
+                    string input = Welcome();
 
-            var follower = new Blocked();
-            var student = new Blocked();
-            var blocker = new Blocked();
+                    switch (input)
+                    {
+                        case "1":
+                            AccLogIn();
+                            break;
 
-            userFollow.FollowAcc(follower, student);
-            userFollow.UnfollowAcc(follower, student);
+                        case "2":
+                            GetStudentNo();
+                            break;
+                    }
 
-            userBlock.BlockAcc(blocker, student);
-            userBlock.UnblockAcc(blocker, student);
+                    if (input.ToLower() == "x")
+                    {
+                        Console.WriteLine("Program Terminated");
+                        break;
+                    }
+                } while (true);
+            }
+
+            static string Welcome()
+            {
+                Console.WriteLine("=WELCOME=");
+                Console.WriteLine("1 - Log In");
+                Console.WriteLine("2 - Sign Up");
+                Console.WriteLine("x - Exit");
+                Console.WriteLine("\nEnter here: ");
+                string choice = Console.ReadLine();
+
+                return choice;
+            }
+            static void AccLogIn()
+            {
+                Console.WriteLine("\nEnter your StudentNo: ");
+                string studentNo = Console.ReadLine();
+
+                Console.WriteLine("Enter your Password: ");
+                string passWord = Console.ReadLine();
+
+                _rulelayer.LogIn(studentNo, passWord);
+            }
+
+            static void GetStudentNo()
+            {
+                Console.WriteLine("Enter Student Number: ");
+                string studentNo = Console.ReadLine();
+
+                _rulelayer.SignUpStudentNo(studentNo);
+            }
         }
 
     }
