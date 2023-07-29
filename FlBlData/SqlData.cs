@@ -180,7 +180,6 @@ namespace FlBlData
             {
                 Flwing.Add(new Following
                 {
-                    StudentNo = reader["StudentNo"].ToString(),
                     FollowingName = reader["FollowingName"].ToString(),
                     FollowingCourse = reader["FollowingCourse"].ToString(),
                     FollowingSection = reader["FollowingSection"].ToString()
@@ -208,7 +207,6 @@ namespace FlBlData
             {
                 Flwers.Add(new Follower
                 {
-                    StudentNo = reader["StudentNo"].ToString(),
                     FollowerName = reader["FollowerName"].ToString(),
                     FollowerCourse = reader["FollowerCourse"].ToString(),
                     FollowerSection = reader["FollowerSection"].ToString()
@@ -232,7 +230,6 @@ namespace FlBlData
             {
                 Block.Add(new Blocked
                 {
-                    StudentNo = reader["StudentNo"].ToString(),
                     BlockedName = reader["BlockedName"].ToString(),
                     BlockedCourse = reader["BlockedCourse"].ToString(),
                     BlockedSection = reader["BlockedSection"].ToString()
