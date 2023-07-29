@@ -26,7 +26,6 @@ namespace FlBlData
             {
                 foreach (var blocked in Block)
                 {
-                    Console.WriteLine("StudentNo: " + blocked.StudentNo);
                     Console.WriteLine("Username: " + blocked.BlockedName);
                     Console.WriteLine("Course: " + blocked.BlockedCourse);
                     Console.WriteLine("Section: " + blocked.BlockedSection);

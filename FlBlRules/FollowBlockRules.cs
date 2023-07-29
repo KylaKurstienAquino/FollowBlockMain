@@ -1,6 +1,7 @@
  using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,7 +84,8 @@ namespace FlBlRules
                                 case "1":
                                     Console.WriteLine("Enter the username you want to search:");
                                     string searchName = Console.ReadLine();
-                                    SearchAccount(accounts.StudentNo, searchName);
+                                        SearchAccount(accounts.StudentNo, searchName);
+
                                     break;
 
                                 case "2":
@@ -104,6 +106,11 @@ namespace FlBlRules
                                     Console.WriteLine("Invalid choice. Please try again.");
                                     break;
                             }
+                        }
+                        if (choiceToShow.ToLower() == "x")
+                        {
+
+                            break;
                         }
                     } while (choiceToShow.ToLower() != "x");
                 }

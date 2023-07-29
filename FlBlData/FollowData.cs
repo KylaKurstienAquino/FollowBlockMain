@@ -25,7 +25,6 @@ namespace FlBlData
             {
                 foreach (var tofollow in Flwing)
                 {
-                    Console.WriteLine("StudentNo: " + tofollow.StudentNo);
                     Console.WriteLine("Username: " + tofollow.FollowingName);
                     Console.WriteLine("Course: " + tofollow.FollowingCourse);
                     Console.WriteLine("Section: " + tofollow.FollowingSection);
@@ -46,7 +45,6 @@ namespace FlBlData
             {
                 foreach (var thefollower in Flwers)
                 {
-                    Console.WriteLine("StudentNo: " + thefollower.StudentNo);
                     Console.WriteLine("Username: " + thefollower.FollowerName);
                     Console.WriteLine("Course: " + thefollower.FollowerCourse);
                     Console.WriteLine("Section: " + thefollower.FollowerSection);
