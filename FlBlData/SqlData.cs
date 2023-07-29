@@ -393,7 +393,6 @@ namespace FlBlData
             sqlconnection.Close();
 
         }
-
         private bool IsFollowing(string loggedInStudentNo, string followingName)
         {
             bool itExists = false;
@@ -412,6 +411,20 @@ namespace FlBlData
             return itExists;
 
         }
+        public void RemoveFollowing(string loggedInStudentNo, string followName)
+        {
+            string statement = "DELETE FROM Following WHERE StudentNo = @StudentNo AND FollowingName = @FollowingName";
+            SqlCommand command = new SqlCommand(statement, sqlconnection);
+
+            command.Parameters.AddWithValue("@StudentNo", loggedInStudentNo);
+            command.Parameters.AddWithValue("@FollowingName", followName);
+
+            sqlconnection.Open();
+            command.ExecuteNonQuery();
+            sqlconnection.Close();
+        }
+
+ 
 
         public void RemoveBlocked(string loggedInStudentNo, string blockedName)
         {
@@ -479,18 +492,7 @@ namespace FlBlData
             return itExists;
         }
 
-        public void RemoveFollowing(string loggedInStudentNo, string followName)
-        {
-            string statement = "DELETE FROM Following WHERE StudentNo = @StudentNo AND FollowingName = @FollowingName";
-            SqlCommand command = new SqlCommand(statement, sqlconnection);
-
-            command.Parameters.AddWithValue("@StudentNo", loggedInStudentNo);
-            command.Parameters.AddWithValue("@FollowingName", followName);
-
-            sqlconnection.Open();
-            command.ExecuteNonQuery();
-            sqlconnection.Close();
-        }
+        
 
 
 

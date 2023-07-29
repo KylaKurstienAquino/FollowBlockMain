@@ -32,6 +32,7 @@ namespace FlBlRules
                     if (accounts.Status == "newAcc")
                     {
                         suggests.ShowSuggestions(accounts.Course, accounts.Section, accounts.StudentNo);
+                        
                         do
                         {
                             Console.WriteLine("\npress F if you wish to follow");
@@ -70,8 +71,6 @@ namespace FlBlRules
                                 break;
                             }
                         } while (true);
-
-
                     }
 
                     do
