@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FlBlData;
 using FlBlModel;
+using FlBlUI;
 
 namespace FlBlRules
 {
@@ -14,9 +15,8 @@ namespace FlBlRules
     {
         static SqlData sqlDataAccess = new();
         static List<Accounts> account = new();
-        static SuggestData suggests = new();
-        static BlockData block = new();
-        static FollowData follow = new();
+        static UI uI= new();
+        static ToShowData toShowData = new();
         static string choiceToShow;
 
         public void LogIn(string studentNo, string password)
@@ -27,23 +27,21 @@ namespace FlBlRules
             {
                 if (accounts.StudentNo.Contains(studentNo) || accounts.Password.Contains(password))
                 {
-                    Console.WriteLine("\nWelcome " + accounts.Username);
+                    uI.WelcomeName(accounts.Username);
 
                     if (accounts.Status == "newAcc")
                     {
-                        suggests.ShowSuggestions(accounts.Course, accounts.Section, accounts.StudentNo);
+                        uI.SuggestionLists(accounts.Course, accounts.Section, accounts.StudentNo);
                         
                         do
                         {
-                            Console.WriteLine("\npress F if you wish to follow");
-                            Console.WriteLine("press B if you wish to block");
-                            Console.WriteLine("press x to cancel");
+                            uI.EnterFB();
                             string press = Console.ReadLine().ToUpper();
 
                             switch (press)
                             {
                                 case "F":
-                                    Console.WriteLine("Enter the username you want to follow:");
+                                    uI.NameToFollow();
                                     string username = Console.ReadLine();
                                     account = sqlDataAccess.GetAccountByUsername(username);
                                     foreach (var getFollow in account)
@@ -54,7 +52,7 @@ namespace FlBlRules
                                     break;
 
                                 case "B":
-                                    Console.WriteLine("Enter the username you want to block:");
+                                    uI.NameToBlock();
                                     string toblockname = Console.ReadLine();
                                     account = sqlDataAccess.GetAccountByUsername(toblockname);
                                     foreach (var getFollow in account)
@@ -67,7 +65,6 @@ namespace FlBlRules
 
                             if (press.ToLower() == "x")
                             {
-
                                 break;
                             }
                         } while (true);
@@ -77,56 +74,55 @@ namespace FlBlRules
                     {
                         foreach (var accountList in account)
                         {
-                            choiceToShow = ShowMainMenu();
+                            choiceToShow = uI.ShowMainMenu();
                             switch (choiceToShow)
                             {
                                 case "1":
-                                    Console.WriteLine("Enter the username you want to search:");
+                                    uI.ToSearch();
                                     string searchName = Console.ReadLine();
-                                        SearchAccount(accounts.StudentNo, searchName);
-
+                                    SearchAccount(accounts.StudentNo, searchName);
                                     break;
 
                                 case "2":
-                                    Console.WriteLine("Following List:\n");
-                                    follow.ShowFollowingList(accounts.StudentNo);
+                                    uI.FlwngL();
+                                    toShowData.ShowFollowingList(accounts.StudentNo);
                                     break;
 
                                 case "3":
-                                    Console.WriteLine("Follower List:\n");
-                                    follow.ShowFollowerList(accounts.StudentNo);
+                                    uI.FlwerL();
+                                    toShowData.ShowFollowerList(accounts.StudentNo);
                                     break;
 
                                 case "4":
-                                    block.ShowBlockedList(accounts.StudentNo);
+                                    uI.BlockL();
+                                    toShowData.ShowBlockedList(accounts.StudentNo);
                                     break;
 
                                 default:
-                                    Console.WriteLine("Invalid choice. Please try again.");
+                                    uI.InvalidChoice();
                                     break;
                             }
                         }
                         if (choiceToShow.ToLower() == "x")
                         {
-
                             break;
                         }
                     } while (choiceToShow.ToLower() != "x");
                 }
                 else if (!accounts.StudentNo.Contains(studentNo) || !accounts.Password.Contains(password))
                 {
-                    Console.WriteLine("Invalid student number or password");
+                    uI.Invalid();
                 }
                 else if (!accounts.StudentNo.Contains(studentNo))
                 {
-                    Console.WriteLine("Invalid student number");
+                    uI.Invalid();
                 }
                 else if (!accounts.Password.Contains(password))
                 {
-                    Console.WriteLine("Invalid password");
+                    uI.Invalid();
                 }
                 else
-                { Console.WriteLine("\nInvalid"); }
+                { uI.Invalid(); }
             }
 
         }
@@ -139,12 +135,12 @@ namespace FlBlRules
             {
                 if (sqlDataAccess.IsBlocked(studentNo, searchName))
                 {
-                    Console.WriteLine("Account is blocked. Do you want to unblock it? (Y/N)");
+                    uI.IfBlocked();
                     string choose = Console.ReadLine().ToUpper();
                     if (choose == "Y")
                     {
                         sqlDataAccess.RemoveBlocked(studentNo, searchName);
-                        Console.WriteLine("Account unblocked.");
+                        uI.UnblockedNotice();
 
                     }
                     return;
@@ -154,13 +150,10 @@ namespace FlBlRules
                 {
                     foreach (var display in account)
                     {
-                        Console.WriteLine("\nStudentNo: " + display.StudentNo);
-                        Console.WriteLine("Username: " + display.Username);
-                        Console.WriteLine("Course: " + display.Course);
-                        Console.WriteLine("Section: " + display.Section);
+                        uI.ToDisplay(display.StudentNo, display.Username, display.Course, display.Section);
                     }
 
-                    Console.WriteLine("Enter F to follow, B to Block, or any key to Cancel: ");
+                    uI.EnterFB();
                     string choice = Console.ReadLine().ToUpper();
 
                     switch (choice)
@@ -179,10 +172,9 @@ namespace FlBlRules
 
                     }
                 }
-
                 else
                 {
-                    Console.WriteLine("Account not found");
+                    uI.AccNotFound();
                     return;
                 }
 
@@ -198,28 +190,18 @@ namespace FlBlRules
             {
                 if (sqlDataAccess.AlreadyExists(studentNo))
                 {
-                    Console.WriteLine("You are already registered!");
+                    uI.AlreadyRegistered();
                 }
 
                 else if (accounts.StudentNo.Contains(studentNo))
                 {
-                    Console.WriteLine("Welcome to PUPHub!\n");
-                    Console.WriteLine("Please enter your credentials:\n");
-
-                    Console.WriteLine("Username: ");
-                    string username = Console.ReadLine();
-                    Console.WriteLine("Course: ");
-                    string course = Console.ReadLine();
-                    Console.WriteLine("Section: ");
-                    string section = Console.ReadLine();
-                    Console.WriteLine("Password: ");
-                    string password = Console.ReadLine();
+                    var (username, course, section, password) = UI.WelcomeToPupHub();
 
                     CreateAccount(accounts.StudentNo, username, course, section, password);
                 }
                 else
                 {
-                    Console.WriteLine("You are not registered as a PUP Student!");
+                    uI.NotRegistered();
                 }
             }
         }
@@ -237,18 +219,6 @@ namespace FlBlRules
             };
 
             sqlDataAccess.CreateNewAccount(newacc);
-        }
-        static string ShowMainMenu()
-        {
-            Console.WriteLine("\nChoose an option:");
-            Console.WriteLine("1. Search for an account");
-            Console.WriteLine("2. Show Following List");
-            Console.WriteLine("3. Show Follower List");
-            Console.WriteLine("4. Show Blocked List");
-            Console.WriteLine("x = Log Out");
-            Console.WriteLine("Enter: ");
-            string choice = Console.ReadLine();
-            return choice;
         }
 
     }

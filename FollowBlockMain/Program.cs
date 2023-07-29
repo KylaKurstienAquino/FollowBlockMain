@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Linq;
+using FlBlData;
 using FlBlRules;
+using FlBlModel;
+using FlBlUI;
 
 namespace FollowBlockMain
 {
     public class Program
     {
-            static FollowBlockRules _rulelayer = new();
+        static FollowBlockRules _rulelayer = new();
+        static UI uI = new UI();
 
             public static void Main(string[] args)
             {
@@ -27,7 +31,7 @@ namespace FollowBlockMain
 
                     if (input.ToLower() == "x")
                     {
-                        Console.WriteLine("Program Terminated");
+                        uI.Terminated();
                         break;
                     }
                 } while (true);
@@ -35,34 +39,25 @@ namespace FollowBlockMain
 
             static string Welcome()
             {
-                Console.WriteLine("=WELCOME=");
-                Console.WriteLine("1 - Log In");
-                Console.WriteLine("2 - Sign Up");
-                Console.WriteLine("x - Exit");
-                Console.WriteLine("\nEnter here: ");
+                uI.WelcomeMenu();
                 string choice = Console.ReadLine();
-
                 return choice;
             }
             static void AccLogIn()
             {
-                Console.WriteLine("\nEnter your StudentNo: ");
-                string studentNo = Console.ReadLine();
-
-                Console.WriteLine("Enter your Password: ");
-                string passWord = Console.ReadLine();
-
-                _rulelayer.LogIn(studentNo, passWord);
+                var (studentNo, password) = UI.ToLogIn();
+                _rulelayer.LogIn(studentNo, password);
             }
 
             static void GetStudentNo()
             {
-                Console.WriteLine("Enter Student Number: ");
+                uI.ToSignUp();
                 string studentNo = Console.ReadLine();
-
                 _rulelayer.SignUpStudentNo(studentNo);
             }
-        
+
+            
+
 
     }
 }

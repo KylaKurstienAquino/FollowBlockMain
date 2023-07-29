@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Console\FlBlUI.csproj" />
     <ProjectReference Include="..\FlBlModel\FlBlModel.csproj" />
   </ItemGroup>
 

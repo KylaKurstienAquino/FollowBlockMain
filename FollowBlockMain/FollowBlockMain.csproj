@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FlBlData\FlBlData.csproj" />
+    <ProjectReference Include="..\FlBlModel\FlBlModel.csproj" />
     <ProjectReference Include="..\FlBlRules\FlBlRules.csproj" />
   </ItemGroup>
 

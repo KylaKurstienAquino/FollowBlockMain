@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using FlBlModel;
 using System.Data;
+using FlBlUI;
 
 namespace FlBlData
 {
@@ -16,8 +17,11 @@ namespace FlBlData
         static List<Follower> Flwers { get; set; }
         static List<Following> Flwing { get; set; }
         static List<Blocked> Block { get; set; }
+        static UI uI = new();
 
-        string connectionString = "Data Source=LAPTOP-54CSVUAH\\SQLEXPRESS;Initial Catalog=FlwBlk;Integrated Security=True";
+
+        string connectionString = 
+            "Data Source=LAPTOP-54CSVUAH\\SQLEXPRESS;Initial Catalog=FlwBlk;Integrated Security=True";
 
         static SqlConnection sqlconnection;
 
@@ -74,7 +78,6 @@ namespace FlBlData
             sqlconnection.Close();
             return Acc;
         }
-
 
         public List<Accounts> GetStudentNumberForSignUp(string studentNo)
         {
@@ -362,7 +365,7 @@ namespace FlBlData
                 if (choose == "Y")
                 {
                     RemoveFollowing(loggedInStudentNo, followingName);
-                    Console.WriteLine("Account unfollowed.");
+                    uI.UnFollowNotif();
 
                 }
                 return;
@@ -388,7 +391,7 @@ namespace FlBlData
 
             foreach (var accountList in Acc)
             {
-                Console.WriteLine("You're now following " + accountList.Username);
+                uI.FollowingNotif(accountList.Username);
             }
             sqlconnection.Close();
 
@@ -423,9 +426,6 @@ namespace FlBlData
             command.ExecuteNonQuery();
             sqlconnection.Close();
         }
-
- 
-
         public void RemoveBlocked(string loggedInStudentNo, string blockedName)
         {
             string statement = "DELETE FROM Blocked WHERE StudentNo = @StudentNo AND BlockedName = @BlockedName";
@@ -443,7 +443,7 @@ namespace FlBlData
         {
             if (IsBlocked(loggedInStudentNo, blockedName))
             {
-                Console.WriteLine("You have already blocked this account.");
+                uI.AlreadyBlockNotif();
                 return false;
             }
 
@@ -466,7 +466,7 @@ namespace FlBlData
 
             foreach (var accountList in Acc)
             {
-                Console.WriteLine("You have blocked " + accountList.Username);
+                uI.BlockNotif(accountList.Username);
             }
             sqlconnection.Close();
             return true;
