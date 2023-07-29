@@ -479,6 +479,19 @@ namespace FlBlData
             return itExists;
         }
 
+        public void RemoveFollowing(string loggedInStudentNo, string followName)
+        {
+            string statement = "DELETE FROM Following WHERE StudentNo = @StudentNo AND FollowingName = @FollowingName";
+            SqlCommand command = new SqlCommand(statement, sqlconnection);
+
+            command.Parameters.AddWithValue("@StudentNo", loggedInStudentNo);
+            command.Parameters.AddWithValue("@FollowingName", followName);
+
+            sqlconnection.Open();
+            command.ExecuteNonQuery();
+            sqlconnection.Close();
+        }
+
 
 
     }
