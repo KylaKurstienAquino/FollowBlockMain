@@ -10,8 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FlBlData\FlBlData.csproj" />
-    <ProjectReference Include="..\FlBlModel\FlBlModel.csproj" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FlBlRules\FlBlRules.csproj" />
   </ItemGroup>
 

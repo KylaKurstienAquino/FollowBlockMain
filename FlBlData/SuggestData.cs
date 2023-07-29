@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace FlBlData
 {
-    internal class SuggestData
+    public class SuggestData
     {
-
-
         static SqlData sqlDataAccess = new();
         static List<Accounts> Account = new();
 

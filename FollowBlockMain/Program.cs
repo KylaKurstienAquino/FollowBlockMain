@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Linq;
-using FlBlData;
-using FlBlModel;
 using FlBlRules;
 
 namespace FollowBlockMain
 {
-    class Program
+    public class Program
     {
-        public static void Main ()
-        {
             static FollowBlockRules _rulelayer = new();
+
             public static void Main(string[] args)
             {
                 do
@@ -65,7 +62,7 @@ namespace FollowBlockMain
 
                 _rulelayer.SignUpStudentNo(studentNo);
             }
-        }
+        
 
     }
 }
