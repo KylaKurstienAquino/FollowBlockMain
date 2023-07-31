@@ -1,16 +1,13 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 
 namespace FlBlUI
 {
     public class UI
     {
-        public void BlockLists(string blockname, string course, string section)
+        public void BlockLists(string blockname)
         {
-            Console.WriteLine("\nUsername: " + blockname);
-            Console.WriteLine("Course: " + course);
-            Console.WriteLine("Section: " + section);
+            Console.WriteLine("\nUsername: " + blockname);;
             Console.WriteLine();
         }
         public void NoBlock()
@@ -41,9 +38,9 @@ namespace FlBlUI
         }
         public void SuggestionLists(string username, string course, string section)
         {
-            Console.WriteLine($"\nUsername: {username}");
-            Console.WriteLine($"Course: {course}");
-            Console.WriteLine($"Section: {section}");
+            Console.WriteLine("\nUsername: "+username);
+            Console.WriteLine("Course: "+course);
+            Console.WriteLine("Section: "+section);
         }
         public void BlockNotif(string get)
         {
@@ -77,6 +74,10 @@ namespace FlBlUI
         {
             Console.WriteLine("Account is blocked. Do you want to unblock it? (Y/N)");
         }
+        public void IfFollowing()
+        {
+            Console.WriteLine("Already following. Do you want to unfollow it? (Y/N)");
+        }
         public void UnblockedNotice()
         {
             Console.WriteLine("Account unblocked.");
@@ -90,7 +91,7 @@ namespace FlBlUI
         }
         public void EnterFB()
         {
-            Console.WriteLine("\nEnter F to follow, B to Block, or any key to Cancel: ");
+            Console.WriteLine("\nEnter F to follow, B to Block, or X to Cancel: ");
         }
         public void AccNotFound()
         {
@@ -120,6 +121,10 @@ namespace FlBlUI
         {
             Console.WriteLine("Following List:\n");
         }
+        public void ext()
+        {
+            Console.WriteLine("\nLog Out\n");
+        }
         public void InvalidChoice()
         {
             Console.WriteLine("Invalid choice. Please try again.");
@@ -130,7 +135,7 @@ namespace FlBlUI
         }
         public void WelcomeMenu()
         {
-            Console.WriteLine("=WELCOME=");
+            Console.WriteLine("\n=WELCOME=\n");
             Console.WriteLine("1 - Log In");
             Console.WriteLine("2 - Sign Up");
             Console.WriteLine("x - Exit");

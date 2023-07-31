@@ -71,7 +71,7 @@ namespace FlBlData
             {
                 foreach (var blocked in Block)
                 {
-                    uI.BlockLists(blocked.BlockedName, blocked.BlockedCourse, blocked.BlockedSection);
+                    uI.BlockLists(blocked.BlockedName);
                 }
             }
 

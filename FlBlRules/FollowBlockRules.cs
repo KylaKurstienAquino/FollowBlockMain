@@ -1,4 +1,4 @@
- using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
@@ -15,9 +15,9 @@ namespace FlBlRules
     {
         static SqlData sqlDataAccess = new();
         static List<Accounts> account = new();
-        static UI uI= new();
+        static UI uI = new();
         static ToShowData toShowData = new();
-        static string choiceToShow;
+        static string choiceToShow, press;
 
         public void LogIn(string studentNo, string password)
         {
@@ -25,93 +25,105 @@ namespace FlBlRules
 
             foreach (var accounts in account)
             {
-                if (accounts.StudentNo.Contains(studentNo) || accounts.Password.Contains(password))
-                {
-                    uI.WelcomeName(accounts.Username);
-
-                    if (accounts.Status == "newAcc")
+                
+                    if (accounts.StudentNo.Contains(studentNo) || accounts.Password.Contains(password))
                     {
-                        uI.SuggestionLists(accounts.Course, accounts.Section, accounts.StudentNo);
-                        
-                        do
+                        uI.WelcomeName(accounts.Username);
+
+                        if (accounts.Status == "newAcc")
                         {
+                            toShowData.ShowSuggestions(accounts.Course, accounts.Section, accounts.StudentNo);
+                            do{
                             uI.EnterFB();
-                            string press = Console.ReadLine().ToUpper();
+                                press = Console.ReadLine().ToUpper();
 
-                            switch (press)
-                            {
-                                case "F":
-                                    uI.NameToFollow();
-                                    string username = Console.ReadLine();
-                                    account = sqlDataAccess.GetAccountByUsername(username);
-                                    foreach (var getFollow in account)
-                                    {
-                                        sqlDataAccess.InsertFollowing(getFollow.StudentNo, getFollow.Username);
-                                        sqlDataAccess.InsertFollower(getFollow.StudentNo, getFollow.Username);
-                                    }
-                                    break;
+                                switch (press)
+                                {
+                                    case "F":
+                                        uI.NameToFollow();
+                                        string username = Console.ReadLine();
+                                        account = sqlDataAccess.GetAccountByUsername(username);
+                                        foreach (var getFollow in account)
+                                        {
+                                            sqlDataAccess.InsertFollowing(accounts.StudentNo, getFollow.Username);
+                                            sqlDataAccess.InsertFollower(accounts.StudentNo, getFollow.Username);
+                                        }
+                                        break;
 
-                                case "B":
-                                    uI.NameToBlock();
-                                    string toblockname = Console.ReadLine();
-                                    account = sqlDataAccess.GetAccountByUsername(toblockname);
-                                    foreach (var getFollow in account)
-                                    {
-                                        sqlDataAccess.InsertBlocked(getFollow.StudentNo, getFollow.Username);
-                                    }
-                                    break;
-                            }
+                                    case "B":
+                                        uI.NameToBlock();
+                                        string toblockname = Console.ReadLine();
+                                        account = sqlDataAccess.GetAccountByUsername(toblockname);
+                                        foreach (var getBlock in account)
+                                        {
+                                            sqlDataAccess.InsertBlocked(accounts.StudentNo, getBlock.Username);
+                                        }
+                                        break;
+                               
+                                   
+                                }
                             sqlDataAccess.ChangeStatus(studentNo, password);
-
-                            if (press.ToLower() == "x")
+                            if (press.ToUpper() == "X")
                             {
                                 break;
                             }
                         } while (true);
-                    }
+                        }
 
-                    do
-                    {
-                        foreach (var accountList in account)
+                        do
                         {
-                            choiceToShow = uI.ShowMainMenu();
-                            switch (choiceToShow)
+                            foreach (var accountList in account)
                             {
-                                case "1":
-                                    uI.ToSearch();
-                                    string searchName = Console.ReadLine();
-                                    SearchAccount(accounts.StudentNo, searchName);
-                                    break;
+                                choiceToShow = uI.ShowMainMenu();
+                                switch (choiceToShow)
+                                {
+                                    case "1":
+                                        uI.ToSearch();
+                                        string searchName = Console.ReadLine();
+                                        SearchAccount(accounts.StudentNo, searchName);
+                                        break;
 
-                                case "2":
-                                    uI.FlwngL();
-                                    toShowData.ShowFollowingList(accounts.StudentNo);
-                                    break;
+                                    case "2":
+                                        uI.FlwngL();
+                                        toShowData.ShowFollowingList(accounts.StudentNo);
+                                        break;
 
-                                case "3":
-                                    uI.FlwerL();
-                                    toShowData.ShowFollowerList(accounts.StudentNo);
-                                    break;
+                                    case "3":
+                                        uI.FlwerL();
+                                        toShowData.ShowFollowerList(accounts.StudentNo);
+                                        break;
 
-                                case "4":
-                                    uI.BlockL();
-                                    toShowData.ShowBlockedList(accounts.StudentNo);
-                                    break;
+                                    case "4":
+                                        uI.BlockL();
+                                        toShowData.ShowBlockedList(accounts.StudentNo);
+                                        break;
 
-                                default:
-                                    uI.InvalidChoice();
-                                    break;
+                                    case "x":
+                                        uI.ext();
+                                        break;
+
+                                    default:
+
+
+                                        if (choiceToShow.ToLower() == "x")
+                                        {
+
+                                        }
+                                        else
+
+                                        {
+                                            uI.InvalidChoice();
+                                        }
+                                        break;
+                                }
                             }
-                        }
-                        if (choiceToShow.ToLower() == "x")
-                        {
-                            break;
-                        }
-                    } while (choiceToShow.ToLower() != "x");
-                }
-                else if (!accounts.StudentNo.Contains(studentNo) || !accounts.Password.Contains(password))
-                {
-                    uI.Invalid();
+
+                        } while (choiceToShow.ToLower() != "x");
+                    }
+     
+              else if (!accounts.StudentNo.Contains(studentNo) || !accounts.Password.Contains(password))
+               {
+                  uI.Invalid();
                 }
                 else if (!accounts.StudentNo.Contains(studentNo))
                 {
@@ -119,10 +131,11 @@ namespace FlBlRules
                 }
                 else if (!accounts.Password.Contains(password))
                 {
-                    uI.Invalid();
+                   uI.Invalid();
                 }
                 else
                 { uI.Invalid(); }
+
             }
 
         }
@@ -152,6 +165,20 @@ namespace FlBlRules
                     {
                         uI.ToDisplay(display.StudentNo, display.Username, display.Course, display.Section);
                     }
+
+                    if (sqlDataAccess.IsFollowing(studentNo, searchName))
+                    {
+                        uI.IfFollowing();
+                        string choose = Console.ReadLine().ToUpper();
+                        if (choose == "Y")
+                        {
+                            sqlDataAccess.RemoveFollowing(studentNo, searchName);
+                            uI.UnFollowNotif();
+
+                        }
+                        return;
+                    }
+
 
                     uI.EnterFB();
                     string choice = Console.ReadLine().ToUpper();

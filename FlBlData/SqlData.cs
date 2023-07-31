@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +19,7 @@ namespace FlBlData
         static UI uI = new();
 
 
-        string connectionString = 
+        string connectionString =
             "Data Source=LAPTOP-54CSVUAH\\SQLEXPRESS;Initial Catalog=FlwBlk;Integrated Security=True";
 
         static SqlConnection sqlconnection;
@@ -360,7 +359,7 @@ namespace FlBlData
         {
             if (IsFollowing(loggedInStudentNo, followingName))
             {
-                Console.WriteLine("Already following. Do you want to unfollow it? (Y/N)");
+                uI.IfFollowing();
                 string choose = Console.ReadLine().ToUpper();
                 if (choose == "Y")
                 {
@@ -396,7 +395,7 @@ namespace FlBlData
             sqlconnection.Close();
 
         }
-        private bool IsFollowing(string loggedInStudentNo, string followingName)
+        public bool IsFollowing(string loggedInStudentNo, string followingName)
         {
             bool itExists = false;
             string statement = "SELECT * FROM Following WHERE StudentNo = @StudentNo AND FollowingName = @FollowingName";
@@ -492,9 +491,10 @@ namespace FlBlData
             return itExists;
         }
 
-        
+
 
 
 
     }
 }
+
